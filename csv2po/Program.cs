@@ -50,7 +50,7 @@ namespace csv2po
                         }
                     }                   
                 }
-                StreamWriter sw = new StreamWriter("converted.po");
+                StreamWriter sw = new StreamWriter(args[0] + ".po");
                 sw.Write(sb.ToString());
                 sw.Close();
             }
