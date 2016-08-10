@@ -39,10 +39,21 @@ namespace csv2po
                     }
                     if (record.source != "")
                     {
-                        sb.Append("msgid \"").Append(record.source.Replace("\"", "\\\"").Replace("\n", "\\n\"\r\n\"")).Append("\"\r\n");
+                        sb.Append("msgid \"").Append(record.source.Replace("\"", "\\\"").Replace("\n", "\\n\"\r\n\"")).Append("\"\r\n");                       
                         if (record.target != "")
                         {
-                            sb.Append("msgstr \"").Append(record.target.Replace("\"", "\\\"").Replace("\n", "\\n\"\r\n\"")).Append("\"\r\n\r\n");
+                            if (Regex.IsMatch(record.source, @"\n\z"))
+                            {
+                                sb.Append("msgstr \"").Append(record.target.Replace("\"", "\\\"").Replace("\n", "\\n\"\r\n\"")).Append("\\n\"\r\n\r\n");
+                            }
+                            else if (Regex.IsMatch(record.source, @"^\n"))
+                            {
+                                sb.Append("msgstr \"\\n\"\r\n\"").Append(record.target.Replace("\"", "\\\"").Replace("\n", "\\n\"\r\n\"")).Append("\"\r\n\r\n");
+                            }
+                            else
+                            {
+                                sb.Append("msgstr \"").Append(record.target.Replace("\"", "\\\"").Replace("\n", "\\n\"\r\n\"")).Append("\"\r\n\r\n");
+                            }
                         }
                         else
                         {
